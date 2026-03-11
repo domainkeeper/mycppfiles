@@ -55,7 +55,6 @@ void monsterattack(int &health, string &name, int &monsterhealth)
         cout << "You chose to flee from the monster." << endl;
         explore(health,name);
     }
-     
 
 }
 
