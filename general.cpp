@@ -20,7 +20,8 @@ int main(){
     }
     cout<<"Sorted array: ";
     for(i=0;i<n;i++){
-        cout<<arr[i]<<" ";
-    }
+        cout<<arr[i]<<" "; 
+
+    }                                                                                                                                    
 
 }
