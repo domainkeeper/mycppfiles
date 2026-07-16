@@ -62,12 +62,39 @@ class stack{
 
 int main(){
     stack s;
-    s.push(33);
-    s.push(47);
-    s.push(78);
-    s.display();
-    cout<<"Top element is: "<<s.peek()<<endl;
-    cout<<"Popped element is: "<<s.pop()<<endl;
-    s.display();
+    // s.push(33);
+    // s.push(47);
+    // s.push(78);
+    // s.display();
+    // cout<<"Top element is: "<<s.peek()<<endl;
+    // cout<<"Popped element is: "<<s.pop()<<endl;
+    // s.display();
+    int n;
+    cout<<"No. of operations u can do: ";
+    cin>>n;
+
+    for(int i=0;i<n;i++){
+        int ch;
+        cout<<"Enter your choice: 1.Push 2.Pop 3.Peek 4.Display"<<endl;
+        cin>>ch;
+        switch (ch){
+            case 1:
+                int val;
+                cin>>val;
+                s.push(val);
+                break;
+            case 2:
+                cout<<"Popped element is: "<<s.pop()<<endl;
+                break;
+            case 3:
+                cout<<"Top element is: "<<s.peek()<<endl;
+                break;
+            case 4:
+                s.display();
+                break;
+            default:
+                cout<<"Invalid choice"<<endl;
+        }
+    }
     return 0;
 }
