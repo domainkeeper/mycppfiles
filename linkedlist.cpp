@@ -12,7 +12,7 @@ class Node {
     }
 };
 
-void insert(Node* &head,int value, int pos){
+void insert(Node *head,int value, int pos){
     Node* newNode = new Node(value);
     newNode->data=value;
     newNode->next= NULL;
@@ -55,7 +55,7 @@ int main(){
     head->next->next = new Node(30);
 
     display(head);
-    insert(head,25,3);
+    insert(head,25,2);
     display(head);
 
     return 0;
