@@ -3,10 +3,10 @@ using namespace std;
 
 
 class stack{
+    int n;
+    int top = -1;
+    int *arr;
     public:
-        int n;
-        int top = -1;
-        int *arr;
 
         stack(int n){
             this->n = n;
@@ -66,10 +66,10 @@ class stack{
 };
 
 int main(){
-    int n;
+    int size;
     cout<<"Enter the size of stack: ";
-    cin>>n;
-    stack s(n);
+    cin>>size;
+    stack s(size);
     // s.push(33);
     // s.push(47);
     // s.push(78);
