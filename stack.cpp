@@ -4,16 +4,21 @@ using namespace std;
 
 class stack{
     public:
-        int arr[100];
+        int n;
         int top = -1;
+        int *arr;
 
+        stack(int n){
+            this->n = n;
+            arr = new int[n];
+        }
         bool isEmpty(){
             return top == -1;
         
         }
 
         bool isFull(){
-            return top == 99;
+            return top == n - 1;
         }
 
         void push(int val){
@@ -61,7 +66,10 @@ class stack{
 };
 
 int main(){
-    stack s;
+    int n;
+    cout<<"Enter the size of stack: ";
+    cin>>n;
+    stack s(n);
     // s.push(33);
     // s.push(47);
     // s.push(78);
