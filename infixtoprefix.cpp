@@ -1,58 +1,114 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
 using namespace std;
 
-int pre(char c){
-    if (c == '^') return 2;
-    if (c == '*' || c == '/' || c == '%') return 1;
-    else return 0;
-}
+class Stack {
+private:
+    char arr[100];
+    int top;
 
-bool as(char c){
-    return c=='^';
-}
-
-string intopre(string s){
-    stack<char> st;
-    reverse(s.begin(),s.end());
-    string ans;
-    for(char c:s){
-        if (isalnum(c)){
-            ans+= c;
-        }
-        else if (c == ')'){
-            st.push(c);
-
-        }
-        else if(c == '('){
-            while(st.top() != ')'){
-                ans+= st.top();
-                st.pop();
-            }
-            st.pop();
-        }
-        else{
-            while(!st.empty() &&
-            (pre(c)<pre(st.top()) || (pre(c) == pre(st.top()) && as(c)))){
-                ans += st.top();
-                st.pop();
-            }
-            st.push(c);
-        }
-
-
+public:
+    Stack() {
+        top = -1;
     }
-    while(!st.empty()){
-        ans += st.top();
-        st.pop();
+
+    bool isEmpty() {
+        return top == -1;
     }
-    return ans;
+
+    void push(char ch) {
+        if (top == 99) {
+            cout << "Stack Overflow\n";
+            return;
+        }
+        arr[++top] = ch;
+    }
+
+    char pop() {
+        if (isEmpty())
+            return '\0';
+
+        return arr[top--];
+    }
+
+    char peek() {
+        if (isEmpty())
+            return '\0';
+
+        return arr[top];
+    }
+};
+
+int precedence(char op) {
+    if (op == '^')
+        return 3;
+    if (op == '*' || op == '/')
+        return 2;
+    if (op == '+' || op == '-')
+        return 1;
+
+    return 0;
 }
-int main(){
+
+string infixToPrefix(string infix) {
+    reverse(infix.begin(), infix.end());
+
+    for (char &ch : infix) {
+        if (ch == '(')
+            ch = ')';
+        else if (ch == ')')
+            ch = '(';
+    }
+
+    Stack s;
+    string prefix = "";
+
+    for (char ch : infix) {
+
+        if (isalnum(ch)) {
+            prefix += ch;
+        }
+
+        else if (ch == '(') {
+            s.push(ch);
+        }
+
+        else if (ch == ')') {
+            while (!s.isEmpty() && s.peek() != '(')
+                prefix += s.pop();
+
+            s.pop();
+        }
+
+        else {
+            while (!s.isEmpty() &&
+                   s.peek() != '(' &&
+                   precedence(s.peek()) > precedence(ch)) {
+                prefix += s.pop();
+            }
+
+            s.push(ch);
+        }
+    }
+
+    while (!s.isEmpty())
+        prefix += s.pop();
+
+    reverse(prefix.begin(), prefix.end());
+
+    return prefix;
+}
+
+int main() {
     string infix;
-    cin>>infix;
-    cout<<endl;
-    string pre = intopre(infix);
-    reverse(pre.begin(),pre.end());
-    cout<<pre<<endl;
+
+    cout << "Enter infix expression: ";
+    cin >> infix;
+
+    cout << "Prefix expression: "
+         << infixToPrefix(infix);
+
     return 0;
 }

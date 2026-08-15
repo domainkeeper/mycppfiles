@@ -1,56 +1,102 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <cctype>
 using namespace std;
 
-int pre(char c){
-    if (c == '^') return 2;
-    if (c == '*' || c == '/' || c == '%') return 1;
-    else return 0;
-}
+class Stack {
+private:
+    char arr[100];
+    int top;
 
-bool as(char c){
-    return c=='^';
-}
-
-string intopost(string s){
-    stack<char> st;
-    string ans;
-    for(char c:s){
-        if (isalnum(c)){
-            ans+= c;
-        }
-        else if (c == '('){
-            st.push(c);
-
-        }
-        else if(c == ')'){
-            while(st.top() != '('){
-                ans+= st.top();
-                st.pop();
-            }
-            st.pop();
-        }
-        else{
-            while(!st.empty() &&
-            (pre(c)<pre(st.top()) || (pre(c) == pre(st.top()) && !as(c)))){
-                ans += st.top();
-                st.pop();
-            }
-            st.push(c);
-        }
-
-
+public:
+    Stack() {
+        top = -1;
     }
-    while(!st.empty()){
-        ans += st.top();
-        st.pop();
+
+    bool isEmpty() {
+        return top == -1;
     }
-    return ans;
+
+    void push(char ch) {
+        if (top == 99) {
+            cout << "Stack Overflow\n";
+            return;
+        }
+        arr[++top] = ch;
+    }
+
+    char pop() {
+        if (isEmpty())
+            return '\0';
+
+        return arr[top--];
+    }
+
+    char peek() {
+        if (isEmpty())
+            return '\0';
+
+        return arr[top];
+    }
+};
+
+int precedence(char op) {
+    if (op == '^')
+        return 3;
+    if (op == '*' || op == '/')
+        return 2;
+    if (op == '+' || op == '-')
+        return 1;
+
+    return 0;
 }
-int main(){
+
+string infixToPostfix(string infix) {
+    Stack s;
+    string postfix = "";
+
+    for (char ch : infix) {
+
+        if (isalnum(ch)) {
+            postfix += ch;
+        }
+
+        else if (ch == '(') {
+            s.push(ch);
+        }
+
+        else if (ch == ')') {
+            while (!s.isEmpty() && s.peek() != '(')
+                postfix += s.pop();
+
+            s.pop();
+        }
+
+        else {
+            while (!s.isEmpty() &&
+                   s.peek() != '(' &&
+                   precedence(s.peek()) >= precedence(ch)) {
+                postfix += s.pop();
+            }
+
+            s.push(ch);
+        }
+    }
+
+    while (!s.isEmpty())
+        postfix += s.pop();
+
+    return postfix;
+}
+
+int main() {
     string infix;
-    cin>>infix;
-    cout<<endl;
-    string post = intopost(infix);
-    cout<<post<<endl;
+
+    cout << "Enter infix expression: ";
+    cin >> infix;
+
+    cout << "Postfix expression: "
+         << infixToPostfix(infix);
+
     return 0;
 }

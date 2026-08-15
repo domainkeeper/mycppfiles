@@ -1,33 +1,107 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <cctype>
 using namespace std;
 
-int evaluate(string s){
-    stack<int> st;
-    for(char c:s){
-        if (isdigit(c)){
-            st.push(c-'0');
+class Stack {
+private:
+    int arr[100];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+
+    bool isFull() {
+        return top == 99;
+    }
+
+    void push(int value) {
+        if (isFull()) {
+            cout << "Stack Overflow\n";
+            return;
         }
-        else{
-            int op1,op2;
-            op2 = st.top();
-            st.pop();
-            op1 = st.top();
-            st.pop();
-            switch(c){
-                case '+': st.push(op1+op2);
-                case '-': st.push(op1-op2);
-                case '*': st.push(op1*op2);
-                case '/': st.push(op1/op2);
-                case '%': st.push(op1%op2);
-                case '^': st.push(pow(op1,op2));
-            }
+
+        arr[++top] = value;
+    }
+
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack Underflow\n";
+            return -1;
+        }
+
+        return arr[top--];
+    }
+
+    int peek() {
+        if (isEmpty())
+            return -1;
+
+        return arr[top];
+    }
+};
+
+int calculate(int a, int b, char op) {
+    switch (op) {
+    case '+':
+        return a + b;
+
+    case '-':
+        return a - b;
+
+    case '*':
+        return a * b;
+
+    case '/':
+        return a / b;
+
+    case '^': {
+        int result = 1;
+        for (int i = 0; i < b; i++)
+            result *= a;
+        return result;
+    }
+    }
+
+    return 0;
+}
+
+int evaluatePostfix(string expression) {
+    Stack s;
+
+    for (char ch : expression) {
+
+        if (isdigit(ch)) {
+            s.push(ch - '0');
+        }
+
+        else {
+            int b = s.pop();
+            int a = s.pop();
+
+            int result = calculate(a, b, ch);
+
+            s.push(result);
         }
     }
-    return st.top();
+
+    return s.pop();
 }
-int main(){
+
+int main() {
     string postfix;
-    cin>>postfix;
-    cout<<endl<<evaluate(postfix);
+
+    cout << "Enter postfix expression: ";
+    cin >> postfix;
+
+    cout << "Result: "
+         << evaluatePostfix(postfix);
+
     return 0;
 }
